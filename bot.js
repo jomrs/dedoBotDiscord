@@ -25,32 +25,31 @@ Object.keys(msg_imagens).forEach((fala) => {
 });
 
 client.on("message", async msg => {
-	if(msg.content.includes("@")) msg.channel.send("yup eu vi q você mensionou o cara, na surdina ne?");
 	const mensionado = msg.mentions.users.first();
 	const autor_msg = msg.author;
 
 	if(mensionado) {
-		const mil_anos = "./src/pictures/naruto.jpg"
-		const autor_msg_pic = `https://cdn.discordapp.com/avatars/${autor_msg.id}/${autor_msg.avatar}.png?size=256`
-		const mensionado_pic = `https://cdn.discordapp.com/avatars/${mensionado.id}/${mensionado.avatar}.png?size=256`;
+		try {
+			const autor_msg_url = `https://cdn.discordapp.com/avatars/${autor_msg.id}/${autor_msg.avatar}.png?size=256`;
+			const mensionado_url = `https://cdn.discordapp.com/avatars/${mensionado.id}/${mensionado.avatar}.png?size=256`;
 
-		const canvas = Canvas.createCanvas(600, 600);
-		const context = canvas.getContext('2d');
+			const canvas = Canvas.createCanvas(600, 600);
+			const context = canvas.getContext('2d');
 
-		const background = await Canvas.loadImage(mil_anos);
-		const mensionado_pic = await Canvas.loadImage(mensionado_pic);
-		const autor_msg_pic = await Canvas.loadImage(autor_msg_pic);
-		
-		//imagem base
-		context.drawImage(background, 0, 0, canvas.width, canvas.height);
-		//naruto
-		context.drawImage(mensionado_pic, 12, 50,85,85);
-		//kakashi
-		context.drawImage(autor_msg_pic, 325, 275, 85, 85);
-		
-		const attachment = new Discord.MessageAttachment(canvas.toBuffer(), 'imagem-gerada.png');
+    		let mil_anos_bg = await Canvas.loadImage('./src/pictures/naruto.jpg');
+    		autor_pic = await (Canvas.loadImage(autor_msg_url));
+    		mensionado_pic = await (Canvas.loadImage(mensionado_url));
 
-		msg.channel.send(attachment);
+    		context.drawImage(mil_anos_bg, 0, 0, canvas.width, canvas.height);
+    		context.drawImage(autor_pic, 325, 215, 85, 85);
+    		context.drawImage(mensionado_pic, 12, 85, 85, 85);
+
+			const attachment = new Discord.MessageAttachment(canvas.toBuffer(), 'mil_anos.png');
+    		msg.channel.send(attachment);
+		}
+		catch (error) {
+			msg.channel.send("bota uma foto de perfil antes seu corno.");
+		}
 	}
 });
 
