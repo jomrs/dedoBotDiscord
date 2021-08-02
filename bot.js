@@ -28,7 +28,7 @@ client.on("message", async msg => {
 	const mensionado = msg.mentions.users.first();
 	const autor_msg = msg.author;
 
-	if(mensionado) {
+	if(msg.content.includes('@')) {
 		try {
 			const autor_msg_url = autor_msg.avatar ? `https://cdn.discordapp.com/avatars/${autor_msg.id}/${autor_msg.avatar}.png?size=256`: "./src/pictures/bot.png";
 			const mensionado_url = mensionado.avatar ? `https://cdn.discordapp.com/avatars/${mensionado.id}/${mensionado.avatar}.png?size=256`: "./src/pictures/bot.png";
