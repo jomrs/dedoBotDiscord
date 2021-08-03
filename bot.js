@@ -1,6 +1,7 @@
 const Discord = require("discord.js");
 const Canvas = require('canvas');
 const falas_bot = require('./messages/falas.json');
+const msg_random = require('./messages/random_msg.json')
 const msg_imagens = require('./commands/msg_imagens.json');
 require('dotenv').config();
 
@@ -13,14 +14,27 @@ client.on("ready", () => {
 // HANDLER DE MENSAGENS
 Object.keys(falas_bot).forEach((fala) => {
 	client.on("message", (mensagem) => {
-		if(mensagem.content.includes(fala) && mensagem.author.id != '871872273773121557') mensagem.channel.send(falas_bot[fala]);
+		if(mensagem.author.bot) return;
+		if(mensagem.content.includes(fala)) mensagem.channel.send(falas_bot[fala]);
+	});
+});
+
+Object.keys(msg_random).forEach((fala) => {
+	client.on("message", (mensagem) => {
+		if(mensagem.author.bot) return;
+		if(mensagem.content.includes(fala)) {
+			const maior_valor = msg_random[fala].length; 
+			let posicao_aleatoria = Math.floor(Math.random() * (maior_valor - 0));
+			mensagem.channel.send(msg_random[fala][posicao_aleatoria]);
+		}
 	});
 });
 
 // HANDLER DE COMANDOS IMAGENS
 Object.keys(msg_imagens).forEach((fala) => {
 	client.on("message", (mensagem) => {
-		if(mensagem.content.includes(fala) && mensagem.author.id != '871872273773121557') mensagem.channel.send({files: msg_imagens[fala]});
+		if(mensagem.author.bot) return;
+		if(mensagem.content.includes(fala)) mensagem.channel.send({files: msg_imagens[fala]});
 	});
 });
 
@@ -54,6 +68,7 @@ client.on("message", async msg => {
 });
 
 client.on('message', message => {
+	if(message.author.bot) return;
 	if(message.content.startsWith('/u')) {
 		msg_original = message.content;
 		message.delete();
