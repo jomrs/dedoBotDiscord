@@ -13,14 +13,14 @@ client.on("ready", () => {
 // HANDLER DE MENSAGENS
 Object.keys(falas_bot).forEach((fala) => {
 	client.on("message", (mensagem) => {
-		if(mensagem.content.includes(fala)) mensagem.channel.send(falas_bot[fala]);
+		if(mensagem.content.includes(fala) && mensagem.author.id != '871872273773121557') mensagem.channel.send(falas_bot[fala]);
 	});
 });
 
 // HANDLER DE COMANDOS IMAGENS
 Object.keys(msg_imagens).forEach((fala) => {
 	client.on("message", (mensagem) => {
-		if(mensagem.content.includes(fala)) mensagem.channel.send({files: msg_imagens[fala]});
+		if(mensagem.content.includes(fala) && mensagem.author.id != '871872273773121557') mensagem.channel.send({files: msg_imagens[fala]});
 	});
 });
 
@@ -28,7 +28,7 @@ client.on("message", async msg => {
 	const mensionado = msg.mentions.users.first();
 	const autor_msg = msg.author;
 
-	if(msg.content.includes('@')) {
+	if(msg.content.includes('@') && mensionado) {
 		try {
 			const autor_msg_url = autor_msg.avatar ? `https://cdn.discordapp.com/avatars/${autor_msg.id}/${autor_msg.avatar}.png?size=256`: "./src/pictures/bot.png";
 			const mensionado_url = mensionado.avatar ? `https://cdn.discordapp.com/avatars/${mensionado.id}/${mensionado.avatar}.png?size=256`: "./src/pictures/bot.png";
@@ -52,5 +52,13 @@ client.on("message", async msg => {
 		}
 	}
 });
+
+client.on('message', message => {
+	if(message.content.startsWith('/u')) {
+		msg_original = message.content;
+		message.delete();
+		message.channel.send(msg_original.slice(2, message.content.length));
+	}
+})
 
 client.login(process.env.BOT);
