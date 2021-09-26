@@ -3,13 +3,19 @@ const Canvas = require('canvas');
 const falas_bot = require('./messages/falas.json');
 const msg_random = require('./messages/random_msg.json')
 const msg_imagens = require('./commands/msg_imagens.json');
+const ytdl = require('ytdl-core');
+const ytpl = require('ytpl');
+
 require('dotenv').config();
 
 const client = new Discord.Client();
+const prefix = '!';
+let fila = new Map();
 
 client.on("ready", () => {
 	console.log("Tamo junto fml, pai ta on!");
 });
+
 
 // HANDLER DE MENSAGENS
 Object.keys(falas_bot).forEach((fala) => {
@@ -75,5 +81,132 @@ client.on('message', message => {
 		message.channel.send(msg_original.slice(2, message.content.length));
 	}
 })
+
+// CODIGO DO BOT DE MÚSICA
+client.on("message", async message => {
+    if (message.author.bot) return;
+    if (!message.content.startsWith(prefix)) return;
+
+    const filaServidor = fila.get(message.guild.id);
+
+    if (message.content.startsWith(`${prefix}play`)) {
+    	executar(message, filaServidor);
+    	return;
+    } else if (message.content.startsWith(`${prefix}skip`)) {
+    	skip(message, filaServidor);
+    	return;
+    } else if (message.content.startsWith(`${prefix}stop`)) {
+    	stop(message, filaServidor);
+    	return;
+    } else if (message.content.startsWith(`${prefix}fila`)) {
+		filaPlayer(message, filaServidor);
+		return;
+	} else if (message.content.startsWith(`${prefix}cmd`)) {
+		message.channel.send(`**Paleta de Comandos:**\n**!play {url} -** Arroxa no play.\n**!stop -** Comando dos estraga festa.\n**!skip -** Skipa a música atual.\n**!fila -** Lista a fila de músicas bb.`);
+		return;
+ 	} else {
+    message.channel.send("Comando invalido amigão!");
+    }
+});
+
+async function executar(message, filaServidor) {
+	args = message.content.split(" ");
+  
+	const voiceChannel = message.member.voice.channel;
+	if (!voiceChannel)
+	  return message.channel.send(
+		"Ta tirando? Entra num canal de voz primeiro, anta!"
+	  );
+	const permissions = voiceChannel.permissionsFor(message.client.user);
+	if (!permissions.has("CONNECT") || !permissions.has("SPEAK")) {
+	  return message.channel.send(
+		"Se você não me der a permissão de falar no canal de voz fica dificil parceiro!"
+	  );
+	}
+  
+	const songInfo = await ytdl.getInfo(args[1]);
+	const song = {
+		  title: songInfo.videoDetails.title,
+		  url: songInfo.videoDetails.video_url,
+	 };
+  
+	if (!filaServidor) {
+	  const queueContruct = {
+		textChannel: message.channel,
+		voiceChannel: voiceChannel,
+		connection: null,
+		songs: [],
+		volume: 5,
+		playing: true
+	  };
+  
+	  fila.set(message.guild.id, queueContruct);
+  
+	  queueContruct.songs.push(song);
+  
+	  try {
+		var connection = await voiceChannel.join();
+		queueContruct.connection = connection;
+		play(message.guild, queueContruct.songs[0]);
+	  } catch (err) {
+		console.log(err);
+		fila.delete(message.guild.id);
+		return message.channel.send(err);
+	  }
+	} else {
+	  filaServidor.songs.push(song);
+	  return message.channel.send(`**${song.title}** \nadicionei na fila, agora vê se não enche! 👌`);
+	}
+}
+
+function skip(message, filaServidor) {
+	if (!message.member.voice.channel)
+	  return message.channel.send(
+		"Qualé amigão se quiser skipar vai ter que entrar no canal de música, ta na terceira idade já?"
+	  );
+	if (!filaServidor)
+	  return message.channel.send("Fera, se tivesse uma música na fila eu até skiparia ela pra você, mas é maior que eu, consegue entender?!");
+	filaServidor.connection.dispatcher.end();
+}
+
+
+function stop(message, filaServidor) {
+	if (!message.member.voice.channel)
+	  return message.channel.send(
+		"Engraçadão amigo, que tal pelo menos entrar no canal de voz antes de tentar parar a música? A moderação agradece."
+	  );
+	  
+	if (!filaServidor)
+	  return message.channel.send("A fila ta mais vaiza que meu coração, não tem nada pra parar, agora sai daqui.");
+	  
+	filaServidor.songs = [];
+	filaServidor.connection.dispatcher.end();
+}
+
+ 
+function play(guild, song) {
+	const filaServidor = fila.get(guild.id);
+	if (!song) {
+	  filaServidor.voiceChannel.leave();
+	  fila.delete(guild.id);
+	  return;
+	}
+
+    const transmitir = filaServidor.connection
+    .play(ytdl(song.url))
+    .on("finish", () => {
+      filaServidor.songs.shift();
+      play(guild, filaServidor.songs[0]);
+    })
+    .on("error", error => console.error(error));
+  transmitir.setVolumeLogarithmic(filaServidor.volume / 5);
+  filaServidor.textChannel.send(`🔈 Tocando atualmente: **${song.title}**`);
+}
+
+function filaPlayer(message, filaServidor) {
+	let na_fila = filaServidor.songs.map((musica, idx) => `🎵 | ${idx}° - ${musica.title}`)
+	na_fila = na_fila.join('\n')
+	return message.channel.send(`Fila atual:\n**${na_fila}**`)
+}
 
 client.login(process.env.BOT);
