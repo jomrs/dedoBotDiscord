@@ -124,38 +124,43 @@ async function executar(message, filaServidor) {
 	  );
 	}
   
-	const songInfo = await ytdl.getInfo(args[1]);
-	const song = {
-		  title: songInfo.videoDetails.title,
-		  url: songInfo.videoDetails.video_url,
-	 };
-  
-	if (!filaServidor) {
-	  const queueContruct = {
-		textChannel: message.channel,
-		voiceChannel: voiceChannel,
-		connection: null,
-		songs: [],
-		volume: 5,
-		playing: true
-	  };
-  
-	  fila.set(message.guild.id, queueContruct);
-  
-	  queueContruct.songs.push(song);
-  
-	  try {
-		var connection = await voiceChannel.join();
-		queueContruct.connection = connection;
-		play(message.guild, queueContruct.songs[0]);
-	  } catch (err) {
-		console.log(err);
-		fila.delete(message.guild.id);
-		return message.channel.send(err);
+	try {
+		const songInfo = await ytdl.getInfo(args[1]);
+		const song = {
+			title: songInfo.videoDetails.title,
+			url: songInfo.videoDetails.video_url,
+	   };
+
+	   if (!filaServidor) {
+		const queueContruct = {
+		  textChannel: message.channel,
+		  voiceChannel: voiceChannel,
+		  connection: null,
+		  songs: [],
+		  volume: 5,
+		  playing: true
+		};
+	
+		fila.set(message.guild.id, queueContruct);
+	
+		queueContruct.songs.push(song);
+	
+		try {
+		  var connection = await voiceChannel.join();
+		  queueContruct.connection = connection;
+		  play(message.guild, queueContruct.songs[0]);
+		} catch (err) {
+		  console.log(err);
+		  fila.delete(message.guild.id);
+		  return message.channel.send(err);
+		}
+	  } else {
+		filaServidor.songs.push(song);
+		return message.channel.send(`**${song.title}** \nadicionei na fila, agora vê se não enche! 👌`);
 	  }
-	} else {
-	  filaServidor.songs.push(song);
-	  return message.channel.send(`**${song.title}** \nadicionei na fila, agora vê se não enche! 👌`);
+
+	} catch (e) {
+		return message.channel.send(`deu merda fellas n sei oq bugou más ta aqui o ${e}`)
 	}
 }
 
