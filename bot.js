@@ -6,6 +6,8 @@ const msg_imagens = require('./commands/msg_imagens.json');
 const ytdl = require('ytdl-core');
 const ytpl = require('ytpl');
 
+import { sendBuzz } from './commands/buzz'; 
+
 require('dotenv').config();
 
 const client = new Discord.Client();
@@ -213,5 +215,8 @@ function filaPlayer(message, filaServidor) {
 	na_fila = na_fila.join('\n')
 	return message.channel.send(`Fila atual:\n**${na_fila}**`)
 }
+
+// INIT SEND BUZZ
+sendBuzz(client);
 
 client.login(process.env.BOT);
