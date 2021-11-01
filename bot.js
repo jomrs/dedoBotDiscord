@@ -1,4 +1,4 @@
-//const Discord = require("discord.js");
+//Libs
 import Discord from 'discord.js';
 import Canvas from 'canvas';
 import ytdl from 'ytdl-core';
@@ -6,11 +6,13 @@ import ytpl from 'ytpl';
 import fetch from 'node-fetch';
 import dotenv from 'dotenv';
 
-import { sendBuzz } from './commands/buzz.js'; 
+//data
+import * as falas_bot from './messages/falas.json');
+import * as msg_random from './messages/random_msg.json';
+import * as msg_imagens from './commands/msg_imagens.json');
 
-const falas_bot = fetch('./messages/falas.json').then(res => { return res.json(); });
-const msg_random = fetch('./messages/random_msg.json').then(res => {return res.json(); });
-const msg_imagens = fetch('./commands/msg_imagens.json').then(res => {return res.json(); });
+//commands
+import { sendBuzz } from './commands/buzz.js'; 
 
 dotenv.config();
 
