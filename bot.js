@@ -2,12 +2,10 @@
 import Discord from 'discord.js';
 import Canvas from 'canvas';
 import ytdl from 'ytdl-core';
-import ytpl from 'ytpl';
-import fetch from 'node-fetch';
 import dotenv from 'dotenv';
 
 //data
-import * as falas_bot from './messages/falas.json');
+import * as falas_bot from './messages/falas.json';
 import * as msg_random from './messages/random_msg.json';
 import * as msg_imagens from './commands/msg_imagens.json';
 
