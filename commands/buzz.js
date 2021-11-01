@@ -1,6 +1,6 @@
 const BUZZ_IMAGE = '../src/pictures/buzz.png'
 
-sendBuzz = (client) => {
+const sendBuzz = (client) => {
     client.on("message", (message) => {
         if(mensage.author.bot) return;
         if(message.content.startsWith('!ele')) {
@@ -9,4 +9,4 @@ sendBuzz = (client) => {
     })
 }
 
-export default sendBuzz;
+export { sendBuzz };

@@ -7,10 +7,12 @@
     "ffmpeg": "0.0.4",
     "ffmpeg-static": "^4.4.0",
     "fluent-ffmpeg": "^2.1.2",
+    "node-fetch": "^3.0.0",
     "ytdl-core": "^4.9.1",
     "ytpl": "^2.2.3"
   },
   "scripts": {
     "start": "node bot.js"
-  }
+  },
+  "type": "module"
 }
