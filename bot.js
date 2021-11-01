@@ -3,20 +3,24 @@ import Discord from 'discord.js';
 import Canvas from 'canvas';
 import ytdl from 'ytdl-core';
 import dotenv from 'dotenv';
-
-//data
-import * as falas_bot from './messages/falas.json';
-import * as msg_random from './messages/random_msg.json';
-import * as msg_imagens from './commands/msg_imagens.json';
+import { createRequire } from 'module';
 
 //commands
 import { sendBuzz } from './commands/buzz.js'; 
 
-dotenv.config();
 
+//configs
+
+dotenv.config();
 const client = new Discord.Client();
 const prefix = '!';
-let fila = new Map();
+const require = createRequire(import.meta.url);
+import * as msg_imagens from './commands/msg_imagens.json';
+
+//data
+const falas_bot = require('./messages/falas.json');
+const msg_random = require('./messages/random_msg.json');
+const msg_imagens = require('./commands/msg_imagens.json');
 
 client.on("ready", () => {
 	console.log("Tamo junto fml, pai ta on!");
