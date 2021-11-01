@@ -15,6 +15,7 @@ dotenv.config();
 const client = new Discord.Client();
 const prefix = '!';
 const require = createRequire(import.meta.url);
+let fila = new Map();
 
 //data
 const falas_bot = require('./messages/falas.json');
