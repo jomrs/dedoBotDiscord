@@ -11,7 +11,7 @@
     "ytpl": "^2.2.3"
   },
   "scripts": {
-    "start": "node bot.js"
+    "start": "node --experimental-json-modules bot.js"
   },
   "type": "module"
 }
