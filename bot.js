@@ -15,7 +15,6 @@ dotenv.config();
 const client = new Discord.Client();
 const prefix = '!';
 const require = createRequire(import.meta.url);
-import * as msg_imagens from './commands/msg_imagens.json';
 
 //data
 const falas_bot = require('./messages/falas.json');
