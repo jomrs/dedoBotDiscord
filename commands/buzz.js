@@ -1,4 +1,4 @@
-const BUZZ_IMAGE = './src/pictures/buzz.png'
+const BUZZ_IMAGE = ['../src/pictures/buzz.png'];
 
 const sendBuzz = (client) => {
     client.on("message", (message) => {
