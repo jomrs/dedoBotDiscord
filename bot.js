@@ -9,7 +9,7 @@ import dotenv from 'dotenv';
 //data
 import * as falas_bot from './messages/falas.json');
 import * as msg_random from './messages/random_msg.json';
-import * as msg_imagens from './commands/msg_imagens.json');
+import * as msg_imagens from './commands/msg_imagens.json';
 
 //commands
 import { sendBuzz } from './commands/buzz.js'; 
