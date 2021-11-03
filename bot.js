@@ -1,13 +1,11 @@
 //Libs
 import Discord from 'discord.js';
-import Canvas from 'canvas';
 import ytdl from 'ytdl-core';
 import dotenv from 'dotenv';
 import { createRequire } from 'module';
 
 //commands
 import { sendBuzz } from './commands/buzz.js'; 
-
 
 //configs
 
@@ -16,6 +14,7 @@ const client = new Discord.Client();
 const prefix = '!';
 const require = createRequire(import.meta.url);
 let fila = new Map();
+const Canvas = require('canvas');
 
 //data
 const falas_bot = require('./messages/falas.json');
@@ -67,18 +66,18 @@ client.on("message", async msg => {
 			const context = canvas.getContext('2d');
 
     		let mil_anos_bg = await Canvas.loadImage('./src/pictures/naruto.jpg');
-    		autor_pic = await (Canvas.loadImage(autor_msg_url));
-    		mensionado_pic = await (Canvas.loadImage(mensionado_url));
+    		const autor_pic = await (Canvas.loadImage(autor_msg_url));
+    		const mensionado_pic = await (Canvas.loadImage(mensionado_url));
 
     		context.drawImage(mil_anos_bg, 0, 0, canvas.width, canvas.height);
     		context.drawImage(autor_pic, 325, 215, 85, 85);
     		context.drawImage(mensionado_pic, 12, 85, 85, 85);
 
 			const attachment = new Discord.MessageAttachment(canvas.toBuffer(), 'mil_anos.png');
-    		msg.channel.send(attachment);
+			msg.channel.send(attachment);
 		}
 		catch (error) {
-			msg.channel.send("bota uma foto de perfil antes seu corno.");
+			console.log(error);
 		}
 	}
 });
@@ -86,7 +85,7 @@ client.on("message", async msg => {
 client.on('message', message => {
 	if(message.author.bot) return;
 	if(message.content.startsWith('/u')) {
-		msg_original = message.content;
+		let msg_original = message.content;
 		message.delete();
 		message.channel.send(msg_original.slice(2, message.content.length));
 	}
