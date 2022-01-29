@@ -12,34 +12,21 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-//Libs
+//Libs | Commands
 const discord_js_1 = __importDefault(require("discord.js"));
 const dotenv_1 = __importDefault(require("dotenv"));
-// import { createRequire } from 'module';
-//commands
-let sendBuzz = require('./commands/buzz.js');
+const falas_bot_1 = require("./commands/falas_bot");
 //configs
 dotenv_1.default.config();
 const client = new discord_js_1.default.Client();
-const prefix = '!';
-// const require = createRequire(import.meta.url);
-let fila = new Map();
 const Canvas = require('canvas');
+let sendBuzz = require('./commands/buzz.js');
+const falasBot = new falas_bot_1.FalasBot(client);
 //data
-const falas_bot = require('./messages/falas.json');
 const msg_random = require('./messages/random_msg.json');
 const msg_imagens = require('./commands/msg_imagens.json');
 client.on("ready", () => {
     console.log("Tamo junto fml, pai ta on!");
-});
-// HANDLER DE MENSAGENS
-Object.keys(falas_bot).forEach((fala) => {
-    client.on("message", (mensagem) => {
-        if (mensagem.author.bot)
-            return;
-        if (mensagem.content.includes(fala))
-            mensagem.channel.send(falas_bot[fala]);
-    });
 });
 Object.keys(msg_random).forEach((fala) => {
     client.on("message", (mensagem) => {
@@ -57,8 +44,14 @@ Object.keys(msg_imagens).forEach((fala) => {
     client.on("message", (mensagem) => {
         if (mensagem.author.bot)
             return;
-        if (mensagem.content.includes(fala))
-            mensagem.channel.send({ files: msg_imagens[fala] });
+        if (mensagem.content.includes(fala)) {
+            try {
+                mensagem.channel.send({ files: msg_imagens[fala] });
+            }
+            catch (error) {
+                console.log(`Problema aqui amigão: ${error}`);
+            }
+        }
     });
 });
 client.on("message", (msg) => __awaiter(void 0, void 0, void 0, function* () {
@@ -93,5 +86,7 @@ client.on('message', message => {
         message.channel.send(msg_original.slice(2, message.content.length));
     }
 });
+// INIT LISTENERS
 sendBuzz(client);
+falasBot.listen();
 client.login(process.env.BOT);

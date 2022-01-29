@@ -1,37 +1,21 @@
-//Libs
+//Libs | Commands
 import Discord from 'discord.js';
-import ytdl from 'ytdl-core';
 import dotenv from 'dotenv';
-// import { createRequire } from 'module';
-
-//commands
-let sendBuzz = require('./commands/buzz.js');
+import { FalasBot }  from './commands/falas_bot';
 
 //configs
-
 dotenv.config();
 const client = new Discord.Client();
-const prefix = '!';
-// const require = createRequire(import.meta.url);
-let fila = new Map();
 const Canvas = require('canvas');
+let sendBuzz = require('./commands/buzz.js');
+const falasBot: FalasBot = new FalasBot(client);
 
 //data
-const falas_bot = require('./messages/falas.json');
 const msg_random = require('./messages/random_msg.json');
 const msg_imagens = require('./commands/msg_imagens.json');
 
 client.on("ready", () => {
 	console.log("Tamo junto fml, pai ta on!");
-});
-
-
-// HANDLER DE MENSAGENS
-Object.keys(falas_bot).forEach((fala) => {
-	client.on("message", (mensagem) => {
-		if(mensagem.author.bot) return;
-		if(mensagem.content.includes(fala)) mensagem.channel.send(falas_bot[fala]);
-	});
 });
 
 Object.keys(msg_random).forEach((fala) => {
@@ -49,7 +33,13 @@ Object.keys(msg_random).forEach((fala) => {
 Object.keys(msg_imagens).forEach((fala) => {
 	client.on("message", (mensagem) => {
 		if(mensagem.author.bot) return;
-		if(mensagem.content.includes(fala)) mensagem.channel.send({files: msg_imagens[fala]});
+		if(mensagem.content.includes(fala)) {
+			try {
+				mensagem.channel.send({files: msg_imagens[fala]});
+			} catch (error) {
+				console.log(`Problema aqui amigão: ${error}`);
+			}
+		}
 	});
 });
 
@@ -91,6 +81,8 @@ client.on('message', message => {
 	}
 })
 
+// INIT LISTENERS
 sendBuzz(client);
+falasBot.listen();
 
 client.login(process.env.BOT);
