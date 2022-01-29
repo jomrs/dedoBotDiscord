@@ -9,4 +9,4 @@ const sendBuzz = (client) => {
     })
 }
 
-export { sendBuzz };
+module.exports = sendBuzz

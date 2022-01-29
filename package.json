@@ -11,7 +11,12 @@
     "ytpl": "^2.2.3"
   },
   "scripts": {
-    "start": "node --experimental-json-modules bot.js"
+    "start": "node --experimental-json-modules bot.js",
+    "build": "tsc -p tsconfig.json"
   },
-  "type": "module"
+  "type": "commonjs",
+  "devDependencies": {
+    "@types/node": "^17.0.13",
+    "typescript": "^4.5.5"
+  }
 }
