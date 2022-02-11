@@ -9,6 +9,7 @@ const client = new Discord.Client();
 const Canvas = require('canvas');
 let sendBuzz = require('./commands/buzz.js');
 const falasBot: FalasBot = new FalasBot(client);
+client.setMaxListeners(0);
 
 //data
 const msg_random = require('./messages/random_msg.json');
