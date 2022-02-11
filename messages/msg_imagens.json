@@ -2,5 +2,6 @@
     "opora": ["./src/pictures/opora.webp"],
     "sk8": ["./src/pictures/charli.webp"],
     "como": ["./src/pictures/tomc.webp"],
-    "carlin": ["./src/pictures/brejas.jpg"]
+    "carlin": ["./src/pictures/brejas.jpg"],
+    "ele é": ["./src/pictures/buzz.png"]
 }

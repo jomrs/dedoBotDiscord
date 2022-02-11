@@ -3,37 +3,22 @@ import Discord from 'discord.js';
 import dotenv from 'dotenv';
 import { FalasBot }  from './commands/falas_bot';
 import { MensagemRandom } from './commands/mensagem_random';
+import { MensagemImagem } from './commands/mensagem_imagem';
 
 //configs
 dotenv.config();
 const client = new Discord.Client();
 const Canvas = require('canvas');
-const sendBuzz = require('./commands/buzz.js');
 const falasBot: FalasBot = new FalasBot(client);
 const mensagemRandom: MensagemRandom = new MensagemRandom(client);
+const mensagemImagem: MensagemImagem = new MensagemImagem(client);
 client.setMaxListeners(0);
-
-//data
-const msg_imagens = require('./commands/msg_imagens.json');
 
 client.on("ready", () => {
 	console.log("Tamo junto fml, pai ta on!");
 });
 
 // HANDLER DE COMANDOS IMAGENS
-Object.keys(msg_imagens).forEach((fala) => {
-	client.on("message", (mensagem) => {
-		if(mensagem.author.bot) return;
-		if(mensagem.content.includes(fala)) {
-			try {
-				mensagem.channel.send({files: msg_imagens[fala]});
-			} catch (error) {
-				console.log(`Problema aqui amigão: ${error}`);
-			}
-		}
-	});
-});
-
 client.on("message", async msg => {
 	const mensionado = msg.mentions.users.first();
 	const autor_msg = msg.author;
@@ -73,8 +58,8 @@ client.on('message', message => {
 })
 
 // INIT LISTENERS
-sendBuzz(client);
 falasBot.listen();
 mensagemRandom.listen();
+mensagemImagem.listen();
 
 client.login(process.env.BOT);
