@@ -2,32 +2,22 @@
 import Discord from 'discord.js';
 import dotenv from 'dotenv';
 import { FalasBot }  from './commands/falas_bot';
+import { MensagemRandom } from './commands/mensagem_random';
 
 //configs
 dotenv.config();
 const client = new Discord.Client();
 const Canvas = require('canvas');
-let sendBuzz = require('./commands/buzz.js');
+const sendBuzz = require('./commands/buzz.js');
 const falasBot: FalasBot = new FalasBot(client);
+const mensagemRandom: MensagemRandom = new MensagemRandom(client);
 client.setMaxListeners(0);
 
 //data
-const msg_random = require('./messages/random_msg.json');
 const msg_imagens = require('./commands/msg_imagens.json');
 
 client.on("ready", () => {
 	console.log("Tamo junto fml, pai ta on!");
-});
-
-Object.keys(msg_random).forEach((fala) => {
-	client.on("message", (mensagem) => {
-		if(mensagem.author.bot) return;
-		if(mensagem.content.includes(fala)) {
-			const maior_valor = msg_random[fala].length; 
-			let posicao_aleatoria = Math.floor(Math.random() * (maior_valor - 0));
-			mensagem.channel.send(msg_random[fala][posicao_aleatoria]);
-		}
-	});
 });
 
 // HANDLER DE COMANDOS IMAGENS
@@ -85,5 +75,6 @@ client.on('message', message => {
 // INIT LISTENERS
 sendBuzz(client);
 falasBot.listen();
+mensagemRandom.listen();
 
 client.login(process.env.BOT);
