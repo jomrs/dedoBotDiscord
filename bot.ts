@@ -8,16 +8,17 @@ import { MilAnos } from './commands/mil_anos';
 
 //configs
 dotenv.config();
-const client = new Discord.Client();
+const client: Discord.Client = new Discord.Client().setMaxListeners(0);
+
+// Commands
 const falasBot: FalasBot = new FalasBot(client);
 const mensagemRandom: MensagemRandom = new MensagemRandom(client);
 const mensagemImagem: MensagemImagem = new MensagemImagem(client);
 const milAnos: MilAnos = new MilAnos(client);
 
-client.setMaxListeners(0);
-
+// Greeting
 client.on("ready", () => {
-	console.log("Tamo junto fml, pai ta on!");
+	console.log(process.env.GREETING);
 });
 
 // HANDLER DE COMANDOS IMAGENS
@@ -30,10 +31,11 @@ client.on('message', message => {
 	}
 })
 
-// INIT LISTENERS
+// Listen Commands
 falasBot.listen();
 mensagemRandom.listen();
 mensagemImagem.listen();
 milAnos.listen();
 
+// Login
 client.login(process.env.BOT);
