@@ -1,9 +1,17 @@
 <h3 align="center"> 🤖 DedoBot Revival </h3>
-<p align="center">Recriando o `dedobot` para o nosso Discord.</p>
-<section align="center">
-![Discord](https://img.shields.io/static/v1?label=Discord.js&message=@12.5.3&color=blue) ![TypeScript](https://img.shields.io/static/v1?label=TypeScript&message=4.5.5&color=informational)
-</section>
+<div align="center">
+  
+  Recriando o `dedobot` para o nosso Discord.
+  
+</div>
 
+<div align="center">
+  
+![Discord](https://img.shields.io/static/v1?label=Discord.js&message=@12.5.3&color=blue) 
+![TypeScript](https://img.shields.io/static/v1?label=TypeScript&message=4.5.5&color=informational)
+  
+</div>
+  
 ---
 
 # 💻 Instale as depêndencias do projeto
