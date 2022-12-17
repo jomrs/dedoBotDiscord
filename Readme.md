@@ -32,6 +32,8 @@ yarn install
 | BOT  |  Discord bot key. |
 |  GREETING |  Mensagem apresentada ao iniciar o bot via linha de comando. |
 
+# 🔴 TODO
+- [ ] Atualizar para lib mais recente do DiscordJS.
 
 # 🚀 Rodando o projeto
 No folder do projeto rode:
