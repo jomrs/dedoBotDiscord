@@ -1,15 +1,15 @@
-import Discord from 'discord.js';
+import { Client, Message, Events } from 'discord.js';
 
 class BotFalou
 {
-    protected client!: Discord.Client;
+    protected client!: Client;
 
-    constructor (client: Discord.Client) {
+    constructor (client: Client) {
         this.client = client;
     }
 
     listen(): void {
-        this.client.on("message", message => {
+        this.client.on(Events.MessageCreate, message => {
             if(message.author.bot) return;
             if(message.content.startsWith('/u')) {
                 this.botSendMessage(message);
@@ -17,7 +17,7 @@ class BotFalou
         });
     }
 
-    botSendMessage(message: Discord.Message): void {
+    botSendMessage(message: Message): void {
         const original_message: string = message.content;
 
         message.delete();

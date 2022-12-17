@@ -1,5 +1,5 @@
 // Imports | Libs
-import { Client , GatewayIntentBits} from 'discord.js';
+import { Client , GatewayIntentBits, Events } from 'discord.js';
 import dotenv from 'dotenv';
 import { FalasBot }  from './commands/falas_bot';
 import { MensagemRandom } from './commands/mensagem_random';
@@ -9,7 +9,15 @@ import { BotFalou } from './commands/bot_falou';
 
 // Configs
 dotenv.config();
-const client: Client = new Client({ intents: [GatewayIntentBits.Guilds] });
+const client: Client = new Client(
+	{
+		intents: [
+			GatewayIntentBits.Guilds,
+			GatewayIntentBits.GuildMessages,
+			GatewayIntentBits.MessageContent
+		]
+	}
+	);
 
 // Commands
 const falasBot: FalasBot = new FalasBot(client);
@@ -19,9 +27,7 @@ const milAnos: MilAnos = new MilAnos(client);
 const botFalou: BotFalou = new BotFalou(client);
 
 // Greeting
-client.on("ready", () => {
-	console.log(process.env.GREETING);
-});
+client.on(Events.ClientReady, () => console.log(process.env.GREETING));
 
 // Listen Commands
 falasBot.listen();

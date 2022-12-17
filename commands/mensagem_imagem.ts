@@ -1,23 +1,23 @@
-import Discord from 'discord.js';
+import { Client, Message, Events } from 'discord.js';
 
 class MensagemImagem
 {
-    private client!: Discord.Client;
+    private client!: Client;
     msg_imagens = require('../messages/msg_imagens.json');
 
-    constructor(client: Discord.Client) {
+    constructor(client: Client) {
         this.client = client;
     }
 
     listen(): void {
         for(let imagem in this.msg_imagens) {
-            this.client.on('message', (received_message) => {
+            this.client.on(Events.MessageCreate, (received_message) => {
                 this.processMessage(received_message, imagem);
             });
         }
     }
 
-    processMessage(received_message: Discord.Message, imagem: string): void {
+    processMessage(received_message: Message, imagem: string): void {
         if (received_message.author.bot) return;
         if (received_message.content.includes(imagem)) {
             try {

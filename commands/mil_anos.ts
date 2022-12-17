@@ -1,4 +1,4 @@
-import { Client, AttachmentBuilder, Message, User } from 'discord.js';
+import { Client, Events, Message, User } from 'discord.js';
 import Canvas from 'canvas';
 
 class MilAnos
@@ -13,8 +13,7 @@ class MilAnos
     }
 
     listen(): void {
-        this.client.on("message", async message => {
-            console.log('miau');
+        this.client.on(Events.MessageCreate, async message => {
             if (message.content.includes('@') && this.mentions(message)) {
                 try {
                     const mil_anos_bg = await Canvas.loadImage('./src/pictures/naruto.jpg');
@@ -24,9 +23,15 @@ class MilAnos
                     this.context.drawImage(mil_anos_bg, 0, 0, this.canvas.width, this.canvas.height);
                     this.context.drawImage(author_pic, 325, 215, 85, 85);
                     this.context.drawImage(mensionado_pic, 12, 85, 85, 85);
-        
-                    const attachment = new AttachmentBuilder(this.canvas.toBuffer(), { name: 'mil_anos.png' });
-                    message.channel.send(attachment);
+
+                    message.channel.send({
+                        files: [{
+                            attachment: this.canvas.toBuffer(),
+                            name: 'mil_anos.png',
+                            description: 'Montagem de mil anos de dor do naruto no usuario marcado.'
+                        }]
+                    });
+
                 } catch (error) {
                     console.log(`Erro ao tentar desenhar no canvas: ${error}`);
                 }
