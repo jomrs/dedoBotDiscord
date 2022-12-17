@@ -3,7 +3,7 @@ import { Client, Message, Events } from 'discord.js';
 class MensagemImagem
 {
     private client!: Client;
-    msg_imagens = require('../messages/msg_imagens.json');
+    msg_imagens = require('../../messages/msg_imagens.json');
 
     constructor(client: Client) {
         this.client = client;

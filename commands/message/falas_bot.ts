@@ -1,10 +1,10 @@
 import { Client, Message, Events } from 'discord.js';
-import { FalasBotSchema }  from '../interfaces/falasBotSchema';
+import { FalasBotSchema }  from '../../interfaces/falasBotSchema';
 
 class FalasBot
 {
     private client!: Client;
-    falas: FalasBotSchema = require('../messages/falas.json');
+    falas: FalasBotSchema = require('../../messages/falas.json');
 
     constructor(client: Client) {
         this.client = client;

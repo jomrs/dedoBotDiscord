@@ -3,7 +3,7 @@ import { Client, Message, Events } from 'discord.js';
 class MensagemRandom
 {
     private client!: Client;
-    msg_random = require('../messages/random_msg.json');
+    msg_random = require('../../messages/random_msg.json');
 
     constructor(client: Client) {
         this.client = client;
