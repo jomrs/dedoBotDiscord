@@ -1,5 +1,5 @@
 // Imports | Libs
-import Discord from 'discord.js';
+import { Client , GatewayIntentBits} from 'discord.js';
 import dotenv from 'dotenv';
 import { FalasBot }  from './commands/falas_bot';
 import { MensagemRandom } from './commands/mensagem_random';
@@ -9,7 +9,7 @@ import { BotFalou } from './commands/bot_falou';
 
 // Configs
 dotenv.config();
-const client: Discord.Client = new Discord.Client().setMaxListeners(0);
+const client: Client = new Client({ intents: [GatewayIntentBits.Guilds] });
 
 // Commands
 const falasBot: FalasBot = new FalasBot(client);
