@@ -24,7 +24,7 @@ sudo apt install build-essential libcairo2-dev libpango1.0-dev libjpeg-dev libgi
 yarn install
 ```
 ## 🔧 Configurações
-- renomeie o `.env.example` para -> `.env` na folder do projeto;
+- Renomeie o `.env.example` para -> `.env` na folder do projeto;
 - Altere a variavel de ambiente com a chave do seu bot do Discord. 
 
 | Key  |  Value |
